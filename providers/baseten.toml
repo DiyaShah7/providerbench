@@ -6,6 +6,7 @@ docs = "https://www.baseten.co/pricing/"
 [models]
 "glm-5.3-flash" = "zai-org/GLM-5.3-Flash"
 "deepseek-v4.1-flash" = "deepseek-ai/DeepSeek-V4.1-Flash-1017"
+"glm-5.3" = "zai-org/GLM-5.3"
 
 [[pricing]]
 source = "models_endpoint"         # some providers put prices in GET /models
