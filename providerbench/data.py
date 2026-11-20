@@ -6,6 +6,7 @@ nothing is vendored into the repo.
 import hashlib
 import json
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -18,8 +19,22 @@ HF_ROWS = "https://datasets-server.huggingface.co/rows"
 UA = "providerbench/0.1 (+https://github.com/)"
 
 
-def http_get(url, timeout=90, retries=4, binary=False, cache=True):
-    """GET with retries; cached forever under .cache/ keyed by URL (datasets are versioned)."""
+TRANSIENT = {408, 425, 429, 500, 502, 503, 504}   # worth waiting out; other 4xx fail at once
+
+
+def _wait(err, attempt):
+    """Seconds before the next try: the server's Retry-After if it gives one, else 2, 4, 8, 16, 30, 30..."""
+    ra = getattr(err, "headers", None) and err.headers.get("Retry-After")
+    if ra and str(ra).isdigit():
+        return min(60, int(ra))
+    return min(30, 2 ** (attempt + 1))
+
+
+def http_get(url, timeout=90, retries=7, binary=False, cache=True):
+    """GET with retries; cached forever under .cache/ keyed by URL (datasets are versioned).
+
+    Transient failures (timeouts, 429, 5xx such as Hugging Face's 503) are retried with backoff for
+    about two minutes; a 404 or other client error fails at once."""
     key = hashlib.sha256(url.encode()).hexdigest()[:24]
     path = CACHE / "http" / key
     if cache and path.exists():
@@ -35,10 +50,18 @@ def http_get(url, timeout=90, retries=4, binary=False, cache=True):
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_bytes(raw)
             return raw if binary else raw.decode("utf-8", "replace")
-        except Exception as e:  # noqa: BLE001 - network is flaky, retry everything
+        except urllib.error.HTTPError as e:
             last = e
-            time.sleep(1.5 * (i + 1))
-    raise RuntimeError("GET %s failed: %s" % (url, last))
+            if e.code not in TRANSIENT:
+                break
+        except Exception as e:  # noqa: BLE001 - timeouts, resets, DNS: network is flaky, retry
+            last = e
+        if i < retries - 1:
+            time.sleep(_wait(last, i))
+    host = urllib.parse.urlsplit(url).netloc
+    transient = not isinstance(last, urllib.error.HTTPError) or last.code in TRANSIENT
+    hint = " (%s is having trouble; try again in a few minutes, rows already fetched are cached)" % host if transient else ""
+    raise RuntimeError("GET %s failed: %s%s" % (url, last, hint))
 
 
 def hf_count(dataset, split, config="default"):

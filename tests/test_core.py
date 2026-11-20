@@ -178,3 +178,46 @@ class SessionSuiteTests(unittest.TestCase):
         k = cut_at(msgs, 2600)
         self.assertIn(msgs[k - 1]["role"], ("tool", "assistant"))
         self.assertLessEqual(k, 4)
+
+
+class HttpRetryTests(unittest.TestCase):
+    """data.http_get waits out transient errors (Hugging Face 503s) and fails fast on a 404."""
+
+    def _run(self, seq, url="https://example.invalid/x"):
+        import io
+        import urllib.error
+        from unittest import mock
+        from providerbench import data
+        sleeps = []
+
+        class Resp(io.BytesIO):
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                pass
+
+        def fake(req, timeout=0):
+            c = seq.pop(0)
+            if isinstance(c, int):
+                raise urllib.error.HTTPError(req.full_url, c, "x", {}, None)
+            return Resp(c)
+
+        with mock.patch.object(data.urllib.request, "urlopen", fake), \
+                mock.patch.object(data.time, "sleep", sleeps.append):
+            return data.http_get(url, cache=False), sleeps
+
+    def test_retries_503_then_succeeds(self):
+        body, sleeps = self._run([503, 503, b"ok"])
+        self.assertEqual(body, "ok")
+        self.assertEqual(sleeps, [2, 4])
+
+    def test_404_fails_at_once(self):
+        with self.assertRaises(RuntimeError) as e:
+            self._run([404])
+        self.assertNotIn("try again", str(e.exception))
+
+    def test_gives_up_with_hint(self):
+        with self.assertRaises(RuntimeError) as e:
+            self._run([503] * 7)
+        self.assertIn("try again in a few minutes", str(e.exception))
