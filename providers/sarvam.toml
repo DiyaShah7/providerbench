@@ -13,9 +13,17 @@ x-session-affinity = "{session}"      # routes a session's turns to the same rep
 "glm-5.3" = "glm5.3"
 "kimi-k3.1-pro" = "kimi-k3.1-pro"
 "kimi-k3" = "kimi-k3"
+"deepseek-v4.1-flash-interactive" = "deepseekv4.1-flash-1017-interactive"   # high-throughput variant
+"deepseek-v4-pro" = "deepseekv4-pro"
+"qwen-3.8-27b" = "qwen38-27b"
+"mimo-v2.6-flash" = "mimo-v2.6-flash"
+"mimo-v2.6-pro" = "mimo-v2.6-pro"
 
 [thinking_off]                         # merged into the body when a run asks for thinking off
 "deepseek-v4.1-flash" = { reasoning_effort = "none" }
+"deepseek-v4.1-flash-interactive" = { reasoning_effort = "none" }
+"deepseek-v4-pro" = { reasoning_effort = "none" }
+"qwen-3.8-27b" = { reasoning_effort = "none" }
 
 [extra_body]                           # always merged, per model
 "gemma-4-31b" = { chat_template_kwargs = { enable_thinking = true } }

@@ -12,6 +12,7 @@ x-session-id = "{session}"
 "gemma-4-31b" = "google/gemma-4-31b-it"
 "kimi-k3.1-pro" = "moonshotai/kimi-k3.1-pro"
 "kimi-k3" = "moonshotai/kimi-k3"
+"qwen-3.8-27b" = "qwen/qwen3.8-27b"
 
 [thinking_off]
 "deepseek-v4.1-flash" = { reasoning_effort = "none" }

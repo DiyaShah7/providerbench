@@ -8,6 +8,7 @@ docs = "https://jarvislabs.ai/products/token-factory"
 "deepseek-v4.1-flash" = "deepseek-v4.1-flash-1017"
 "gemma-4-31b" = "gemma-4-31b-it"
 "glm-5.3" = "glm-5.3"
+"qwen-3.8-27b" = "qwen-3.8-27b-fp8"         # fp8 build
 
 [thinking_off]
 "deepseek-v4.1-flash" = { chat_template_kwargs = { thinking = false } }

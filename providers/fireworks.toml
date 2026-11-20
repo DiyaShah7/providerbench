@@ -6,6 +6,12 @@ docs = "https://fireworks.ai/pricing"
 [models]
 "glm-5.3-flash" = "accounts/fireworks/models/glm-5p3-flash"
 "deepseek-v4.1-flash" = "accounts/fireworks/models/deepseek-v4p1-flash-1017"
+"gemma-4-31b" = "accounts/fireworks/models/gemma-4-31b-it"
+"glm-5.3" = "accounts/fireworks/models/glm-5p3"
+"kimi-k3.1-pro" = "accounts/fireworks/models/kimi-k3p1-pro"
+"kimi-k3" = "accounts/fireworks/models/kimi-k3"
+"deepseek-v4-pro" = "accounts/fireworks/models/deepseek-v4-pro"
+"qwen-3.8-27b" = "accounts/fireworks/models/qwen3p8-27b"
 
 [[pricing]]
 source = "models_endpoint"         # some providers put prices in GET /models

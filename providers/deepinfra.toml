@@ -10,6 +10,10 @@ docs = "https://deepinfra.com/pricing"
 "glm-5.3" = "zai-org/GLM-5.3"
 "kimi-k3.1-pro" = "moonshotai/Kimi-K3.1-Pro"
 "kimi-k3" = "moonshotai/Kimi-K3"
+"deepseek-v4-pro" = "deepseek-ai/DeepSeek-V4-Pro"
+"qwen-3.8-27b" = "Qwen/Qwen3.8-27B"
+"mimo-v2.6-flash" = "XiaomiMiMo/MiMo-V2.6-Flash"
+"mimo-v2.6-pro" = "XiaomiMiMo/MiMo-V2.6-Pro"
 
 [extra_body]
 "gemma-4-31b" = { chat_template_kwargs = { enable_thinking = true } }

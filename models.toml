@@ -43,3 +43,33 @@ label = "Kimi K3"
 context = 1048576
 openrouter = "moonshotai/kimi-k3"
 aliases = ["moonshotai/kimi-k3", "moonshotai/Kimi-K3"]
+
+[models."deepseek-v4.1-flash-interactive"]
+label = "DeepSeek V4.1 Flash Interactive"
+context = 1048576
+openrouter = "deepseek/deepseek-v4.1-flash-1017"
+aliases = ["deepseekv4.1-flash-1017-interactive"]
+
+[models."deepseek-v4-pro"]
+label = "DeepSeek V4 Pro"
+context = 1048576
+openrouter = "deepseek/deepseek-v4-pro"
+aliases = ["deepseekv4-pro", "deepseek-ai/DeepSeek-V4-Pro", "deepseek/deepseek-v4-pro"]
+
+[models."qwen-3.8-27b"]
+label = "Qwen 3.8 27B"
+context = 262144
+openrouter = "qwen/qwen3.8-27b"
+aliases = ["qwen38-27b", "qwen3.8-27b", "Qwen/Qwen3.8-27B", "qwen/qwen3.8-27b", "qwen3p8-27b", "qwen-3.8-27b-fp8"]
+
+[models."mimo-v2.6-flash"]
+label = "MiMo V2.6 Flash"
+context = 1048576
+openrouter = "xiaomi/mimo-v2.6-flash"
+aliases = ["XiaomiMiMo/MiMo-V2.6-Flash", "xiaomi/mimo-v2.6-flash"]
+
+[models."mimo-v2.6-pro"]
+label = "MiMo V2.6 Pro"
+context = 1048576
+openrouter = "xiaomi/mimo-v2.6-pro"
+aliases = ["XiaomiMiMo/MiMo-V2.6-Pro", "xiaomi/mimo-v2.6-pro"]
